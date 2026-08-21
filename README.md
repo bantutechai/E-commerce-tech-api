@@ -1,2 +1,29 @@
 # E-commerce-tech-api
 API RESTful segura e modular para CMS de E-Commerce de eletrónicos, desenvolvida em Node.js, Express e MongoDB com foco em Clean Code e proteção contra injeções.
+ecommerce-cms-api/
+├── docs/                                # Documentação técnica detalhada (.md)
+│   ├── 01-ARQUITETURA.md
+│   ├── 02-SEGURANCA.md
+│   ├── 03-SCHEMAS-DATABASE.md
+│   ├── 04-ENDPOINTS-API.md
+│   └── 05-SETUP-E-CONFIGURACAO.md
+│
+├── src/                                 # Código-fonte da aplicação
+│   ├── config/                          # Conexões DB, envs e opções de segurança
+│   ├── constants/                       # Enums, HTTP Status e Funções RBAC
+│   ├── controllers/                     # Handlers de requisições HTTP (req, res)
+│   ├── middlewares/                     # JWT, RBAC, Rate-limit, Anti-Injection
+│   ├── models/                          # Schemas Mongoose (User, Product, etc.)
+│   ├── repositories/                    # Camada de Persistência MongoDB
+│   ├── routes/                          # Mapeamento e agrupamento dos Endpoints
+│   ├── services/                        # Camada de Regras de Negócio
+│   ├── utils/                           # Formatadores, JWT e hashes
+│   ├── validations/                     # Schemas de validação Zod
+│   └── app.js                           # Instância e middlewares do Express
+│
+├── .env.example                         # Exemplo de variáveis de ambiente
+├── .gitignore                           # Ficheiros ignorados pelo Git
+├── package.json                         # Dependências e scripts
+├── README.md                            # Apresentação do repositório
+└── server.js                            # Ponto de entrada (Bootstrapping da API)
+
