@@ -5,11 +5,13 @@ const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const env = require('./config/env');
 const HTTP_STATUS = require('./constants/httpStatus');
+const routes = require('./routes');
 const globalErrorHandler = require('./middlewares/error.middleware');
+const { globalRateLimiter } = require('./middlewares/rateLimit.middleware');
 
 const app = express();
 
-// 1. Security Headers (Helmet)
+// 1. Security Headers
 app.use(helmet());
 
 // 2. CORS Configuration
@@ -22,7 +24,7 @@ app.use(
   })
 );
 
-// 3. Body Parsing Middlewares
+// 3. Body Parsing & Cookies
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
@@ -34,7 +36,10 @@ app.use(
   })
 );
 
-// 5. API Health Check Endpoint
+// 5. Global Rate Limiter
+app.use(globalRateLimiter);
+
+// 6. Health Check Endpoint
 app.get(`${env.API_PREFIX}/health`, (req, res) => {
   res.status(HTTP_STATUS.OK).json({
     success: true,
@@ -44,7 +49,10 @@ app.get(`${env.API_PREFIX}/health`, (req, res) => {
   });
 });
 
-// 6. Handle 404 Undefined Routes
+// 7. Register Application Routes
+app.use(env.API_PREFIX, routes);
+
+// 8. Handle Undefined 404 Routes
 app.use('*', (req, res) => {
   res.status(HTTP_STATUS.NOT_FOUND).json({
     success: false,
@@ -56,7 +64,7 @@ app.use('*', (req, res) => {
   });
 });
 
-// Registra APÓS a rota 404 e antes do module.exports:
+// 9. Global Error Handling Middleware
 app.use(globalErrorHandler);
 
 module.exports = app;
