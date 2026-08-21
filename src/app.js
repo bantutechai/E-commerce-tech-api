@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const env = require('./config/env');
 const HTTP_STATUS = require('./constants/httpStatus');
+const globalErrorHandler = require('./middlewares/error.middleware');
 
 const app = express();
 
@@ -54,5 +55,8 @@ app.use('*', (req, res) => {
     },
   });
 });
+
+// Registra APÓS a rota 404 e antes do module.exports:
+app.use(globalErrorHandler);
 
 module.exports = app;
