@@ -14,22 +14,28 @@ const app = express();
 // 1. Security Headers
 app.use(helmet());
 
+const allowedOrigins = [
+  'http://localhost:5500',                  // Live Server local
+  'http://127.0.0.1:5500',                 // Live Server IP
+  'https://seu-frontend.vercel.app',        // Seu domínio no Vercel
+  'https://seu-usuario.github.io'           // GitHub Pages
+];
+
 app.use(cors({
-  origin: '*', // Permite requisições de qualquer origem (ideal para fase de testes)
+  origin: function (origin, callback) {
+    // Permite requisições sem origem (como aplicativos mobile, cURL ou Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Bloqueado pelo CORS: Origem não permitida.'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// 2. CORS Configuration
-app.use(
-  cors({
-    origin: env.CORS_ORIGIN,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
 
 // 3. Body Parsing & Cookies
 app.use(express.json({ limit: '10kb' }));
