@@ -11,8 +11,7 @@ const router = express.Router();
 
 router.post(
   '/register',
-  authenticate,
-  authorize(ROLES.SUPER_ADMIN),
+  authRateLimiter,
   validate(registerSchema),
   AuthController.register
 );
