@@ -14,6 +14,13 @@ const app = express();
 // 1. Security Headers
 app.use(helmet());
 
+app.use(cors({
+  origin: '*', // Permite requisições de qualquer origem (ideal para fase de testes)
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 // 2. CORS Configuration
 app.use(
   cors({
