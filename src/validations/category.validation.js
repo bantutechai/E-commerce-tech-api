@@ -12,7 +12,7 @@ const createCategorySchema = z.object({
     slug: z
       .string()
       .min(2)
-      .toLowercase()
+      .toLowerCase()
       .trim()
       .optional(),
     description: z.string().max(500).trim().optional(),
