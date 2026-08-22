@@ -17,7 +17,7 @@ app.use(helmet());
 const allowedOrigins = [
   'http://localhost:5500',                  // Live Server local
   'http://127.0.0.1:5500',                 // Live Server IP
-  'https://seu-frontend.vercel.app',        // Seu domínio no Vercel
+  'https://ecommercetechadmin.netlify.app',        // Seu domínio no Vercel
   'https://seu-usuario.github.io'           // GitHub Pages
 ];
 
